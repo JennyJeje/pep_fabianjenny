@@ -10,19 +10,20 @@
         body {
             margin: 4rem;
             box-sizing: border-box;
-            font-family: "Roboto", "sans-serif";
+            font-family: "Arial", "sans-serif";
             height: 100vh;
             user-select: none;
             /* avoid text selection when dragging over text */
             /* image was loaded from https://marketplace.canva.com/MADesCiqolw/1/thumbnail_large/canva-4k-low-poly-background-MADesCiqolw.jpg */
-            background: linear-gradient(90deg, rgba(94, 159, 227, 1) 0%, rgba(78, 136, 222, 1) 100%);
+            background: #4E88DD;
             /*background-image: url("./img/background2.jpg");*/
             /*background-size: cover;*/
             /*background-repeat: no-repeat;*/
             --developer-color: #38001d;
             --project-color: #223e86;
             --hightlight-overlay: #f58d0f;
-            --drop-shadow: 0 .5em 0.5em #D4D4D4;
+            --drop-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            --hover-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
         }
 
         #topicsOverWeeks {
@@ -44,20 +45,20 @@
 
         .developer {
             background-color: var(--developer-color);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            box-shadow: var(--drop-shadow);
             transition: box-shadow 0.3s ease-in-out;
         }
 
         .developer:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--hover-shadow);
         }
 
         .developer {
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            box-shadow: var(--drop-shadow);
         }
 
         .developer::after {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--hover-shadow);
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
         }
@@ -66,23 +67,27 @@
             opacity: 1;
         }
 
+        .rounded-corner {
+            border-radius: 50%;
+        }
+
 
         .project {
             background-color: var(--project-color);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            box-shadow: var(--drop-shadow);
             transition: box-shadow 0.3s ease-in-out;
         }
 
         .project:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--hover-shadow);
         }
 
         .project {
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            box-shadow: var(--drop-shadow);
         }
 
         .project::after {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--hover-shadow);
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
         }
@@ -96,7 +101,6 @@
             background-size: 6em;
             background-position: left top;
             color: white;
-            border: 4px solid var(--developer-color);
         }
 
         .topic.project {
@@ -139,6 +143,7 @@
             padding: 1em;
             /*border-bottom: 1px solid black;*/
             border-radius: 0.5em;
+
         }
 
         .assignment {
@@ -155,6 +160,7 @@
             background-image: linear-gradient(90deg, var(--pid-color), var(--pid-color) 15%, transparent 15%);
             background-blend-mode: exclusion;
             padding: 0.5em 0.5em 0.5em 17%;
+            border-radius: 0.5em;
         }
 
         .assignment.project:hover {
@@ -163,6 +169,7 @@
 
         .assignment.developer {
             padding: 0.5em 0.5em 0.5em 17%;
+            border-radius: 0.5em;
         }
 
         .assignment.developer:hover {
@@ -209,22 +216,38 @@
             background-color: var(--hightlight-overlay);
         }
 
+        .chimpanzee-box {
+            display: flex;
+            justify-content: center;
+            float: right;
+            align-items: center;
+        }
+
         h1 {
             color: #e3e3e4;
             text-align: center;
             padding-bottom: 20px;
         }
+
+        h2 {
+            color: #e3e3e4;
+            font-size: 20px;
+        }
     </style>
 </head>
 
 <body>
-
     <h1>Personaleinsatzplanung</h1>
+
 
     <main>
         <div id="topicsOverWeeks"></div>
-    </main>
 
+    </main>
+    <div class="chimpanzee-box">
+        <img src="img/chimpanzee.gif" alt="chimpanzee" width=200 />
+        <h2>Chimpanzee: Time to plan..</h2>
+    </div>
 
     <script>
         window.grailsServerName = "localhost";

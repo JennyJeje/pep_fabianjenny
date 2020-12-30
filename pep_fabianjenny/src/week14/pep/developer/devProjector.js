@@ -1,12 +1,12 @@
-import {dom}                from "../../util/dom.js";
-import {VALUE, valueOf }    from "../../presentationModel/presentationModel.js";
-import {devWeekProjector}   from "./devWeekProjector.js";
+import { dom } from "../../util/dom.js";
+import { VALUE, valueOf } from "../../presentationModel/presentationModel.js";
+import { devWeekProjector } from "./devWeekProjector.js";
 
 export { developerProjector }
 
 const developerProjector = (developerController, weekController, assignmentController, root) => {
 
-    developerController.onDeveloperAdded( developer => {
+    developerController.onDeveloperAdded(developer => {
 
         // view
 
@@ -15,18 +15,18 @@ const developerProjector = (developerController, weekController, assignmentContr
 
         // binding
 
-        developer.img.getObs(VALUE).onChange( imageUrl =>
-           devElement.style['background-image'] = `url(${imageUrl})`
+        developer.img.getObs(VALUE).onChange(imageUrl =>
+            devElement.style['background-image'] = `url(${imageUrl})`
         );
-        developer.name.getObs(VALUE).onChange( name =>{
-           devElement.innerText = name;
+        developer.name.getObs(VALUE).onChange(name => {
+            devElement.innerText = name;
         });
 
         devElement.ondragstart = evt => {
-            evt.dataTransfer.setData("text/json", JSON.stringify( {devId : valueOf(developer.id)} ))
+            evt.dataTransfer.setData("text/json", JSON.stringify({ devId: valueOf(developer.id) }))
         };
 
-        weekController.eachWeek( week => {
+        weekController.eachWeek(week => {
             devWeekProjector(developer, week, assignmentController, root);
         });
     });
