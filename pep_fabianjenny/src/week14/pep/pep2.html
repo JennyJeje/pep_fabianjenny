@@ -1,189 +1,236 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <script src="pepLocalStarter.js" type="module"></script>
-  <title>Personal Einsatz Planung</title>
-  <style>
-      body {
-          margin: 4rem;
-          box-sizing: border-box;
-          font-family: "Arial", "sans-serif";
-          height: 100vh;
-          user-select: none; /* avoid text selection when dragging over text */
-          /* image was loaded from https://marketplace.canva.com/MADesCiqolw/1/thumbnail_large/canva-4k-low-poly-background-MADesCiqolw.jpg */
-          background: linear-gradient(90deg, rgba(94,159,227,1) 0%, rgba(78,136,222,1) 100%);
-          /*background-image: url("./img/background2.jpg");*/
-          /*background-size: cover;*/
-          /*background-repeat: no-repeat;*/
-          --developer-color: #38001d;
-          --project-color: #223e86;
-          --hightlight-overlay: #f58d0f;
-          --drop-shadow: 0 .5em 0.5em #D4D4D4;
-      }
+    <script src="pepLocalStarter.js" type="module"></script>
+    <title>Personal Einsatz Planung</title>
+    <style>
+        body {
+            margin: 4rem;
+            box-sizing: border-box;
+            font-family: "Arial", "sans-serif";
+            height: 100vh;
+            user-select: none;
+            /* avoid text selection when dragging over text */
+            /* image was loaded from https://marketplace.canva.com/MADesCiqolw/1/thumbnail_large/canva-4k-low-poly-background-MADesCiqolw.jpg */
+            background: linear-gradient(90deg, rgba(94, 159, 227, 1) 0%, rgba(78, 136, 222, 1) 100%);
+            /*background-image: url("./img/background2.jpg");*/
+            /*background-size: cover;*/
+            /*background-repeat: no-repeat;*/
+            --developer-color: #38001d;
+            --project-color: #223e86;
+            --hightlight-overlay: #f58d0f;
+            --drop-shadow: 0 .5em 0.5em #D4D4D4;
+        }
 
-      #topicsOverWeeks {
-          display: grid;
-          grid-template-columns: minmax(12em, 1.2fr) repeat(4, 1fr);
-          grid-row-gap: 1em;
-          grid-column-gap: .5em;
-      }
+        #topicsOverWeeks {
+            display: grid;
+            grid-template-columns: minmax(12em, 1.2fr) repeat(4, 1fr);
+            grid-row-gap: 1em;
+            grid-column-gap: .5em;
+        }
 
-      .topic {
-          min-height: 3em;
-          padding: .2em .5em .2em 50%;
-          border-radius: 3em 0.5em 0.5em 3em;
-          display: flex; /* let the text flow to the right, vertical center */
-          justify-content: flex-end;
-          text-align: right;
-          align-items: center;
-      }
+        .topic {
+            min-height: 3em;
+            padding: .2em .5em .2em 50%;
+            display: flex;
+            /* let the text flow to the right, vertical center */
+            justify-content: flex-end;
+            text-align: right;
+            align-items: center;
+        }
 
-      .developer {
-          background-color: var(--developer-color);
-      }
+        .developer {
+            background-color: var(--developer-color);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            transition: box-shadow 0.3s ease-in-out;
+        }
 
-      .project {
-          background-color: var(--project-color);
-      }
+        .developer:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
 
-      .topic.developer {
-          background-repeat: no-repeat;
-          background-size: 6em;
-          background-position: left top;
-          color: white;
-          border: 4px solid var(--developer-color);
-      }
+        .developer {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        }
 
-      .topic.project {
-          color: white;
-          --pid-color: var(--project-color);
-          /*border: 4px solid var(--project-color);*/
-          background-image: linear-gradient(90deg, var(--pid-color), var(--pid-color) 6em, transparent 6em);
-          background-blend-mode: exclusion;
-      }
+        .developer::after {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
 
-      .week {
-          border-radius: 0.5em;
-          position: relative; /* allow the yellow overlay to position itself absolutely against this */
-          align-self: end; /* the content in the grid cells must float to the bottom */
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-      }
+        .developer:hover::after {
+            opacity: 1;
+        }
 
-      .week.developer {
-          /*border: .3em 0 1px 0px var(--developer-color),*/
-          var(--drop-shadow);
-          background: #e3e3e4;
-      }
 
-      .week.project {
-          /*border: .3em 0 1px 0px var(--project-color),*/
-          var(--drop-shadow);
-          color: white;
-          background: #e3e3e4;
-      }
+        .project {
+            background-color: var(--project-color);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            transition: box-shadow 0.3s ease-in-out;
+        }
 
-      .header {
-          background-color: #e3e3e4;
-          color: rgba(78,136,222,1);
-          text-align: center;
-          font-weight: bold;
-          padding: 1em;
-          /*border-bottom: 1px solid black;*/
-          border-radius: 0.5em;
-      }
+        .project:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
 
-      .assignment {
-          border: 1em solid var(--drop-shadow);
-          padding: 0.5em;
-          border-radius: 1em;
-          overflow: hidden;
-      }
+        .project {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        }
 
-      .assignment.project {
-          color: white;
-          --pid-color: var(--project-color); /* to be set dynamically in assignment projector */
-          background-image: linear-gradient(90deg, var(--pid-color), var(--pid-color) 15%, transparent 15%);
-          background-blend-mode: exclusion;
-          padding: 0.5em 0.5em 0.5em 17%;
-      }
+        .project::after {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
 
-      .assignment.project:hover{
-          background-image: linear-gradient(90deg, var(--pid-color), var(--pid-color) 15%, var(--hightlight-overlay) 15%);
-      }
+        .project:hover::after {
+            opacity: 1;
+        }
 
-      .assignment.developer {
-          padding: 0.5em 0.5em 0.5em 17%;
-      }
+        .topic.developer {
+            background-repeat: no-repeat;
+            background-size: 6em;
+            background-position: left top;
+            color: white;
+            border: 4px solid var(--developer-color);
+        }
 
-      .assignment.developer:hover{
-          background-color: var(--hightlight-overlay);
-      }
+        .topic.project {
+            color: white;
+            --pid-color: var(--project-color);
+            /*border: 4px solid var(--project-color);*/
+            background-image: linear-gradient(90deg, var(--pid-color), var(--pid-color) 6em, transparent 6em);
+            background-blend-mode: exclusion;
+        }
 
-      /* https://css-tricks.com/solved-with-css-logical-styling-based-on-the-number-of-given-elements/ */
-      div:first-child:nth-last-child(3){
-          background-color: red;
-      }
+        .week {
+            border-radius: 0.5em;
+            position: relative;
+            /* allow the yellow overlay to position itself absolutely against this */
+            align-self: end;
+            /* the content in the grid cells must float to the bottom */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
 
-      .soll {
-          z-index: 10;
-          /*border: 1px solid white;*/
-          border-top-width: 2px;
-          border-radius: 0.5rem;
-          position: absolute;
-          bottom: -1px;
-          left: -1px;
-          width: 100%;
-          user-input: none;
-          user-select: none;
-          text-align: center;
-          font-size: 2em;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          /* default, to be overridden when live: */
-          background-color: transparent;
-          opacity: 0.5;
-          pointer-events: none;
-          color: transparent;
-      }
+        .week.developer {
+            /*border: .3em 0 1px 0px var(--developer-color),*/
+            var(--drop-shadow);
+            background: #e3e3e4;
+        }
 
-      .soll.live { /* make sure to have higher specificity */
-          background-color: var(--hightlight-overlay);
-          opacity: 0.7;
-          pointer-events: auto;
-          color: #4DA695;
-      }
+        .week.project {
+            /*border: .3em 0 1px 0px var(--project-color),*/
+            var(--drop-shadow);
+            color: white;
+            background: #e3e3e4;
+        }
 
-      .week.drop {
-          background-color: var(--hightlight-overlay);
-      }
+        .header {
+            background-color: #e3e3e4;
+            color: rgba(78, 136, 222, 1);
+            text-align: center;
+            font-weight: bold;
+            padding: 1em;
+            /*border-bottom: 1px solid black;*/
+            border-radius: 0.5em;
+        }
 
-      h1 {
-          color: #e3e3e4;
-          text-align: center;
-          padding-bottom: 20px;
-      }
+        .assignment {
+            border: 1em solid var(--drop-shadow);
+            padding: 0.5em;
+            border-radius: 1em;
+            overflow: hidden;
+        }
 
-      </style>
+        .assignment.project {
+            color: white;
+            --pid-color: var(--project-color);
+            /* to be set dynamically in assignment projector */
+            background-image: linear-gradient(90deg, var(--pid-color), var(--pid-color) 15%, transparent 15%);
+            background-blend-mode: exclusion;
+            padding: 0.5em 0.5em 0.5em 17%;
+        }
+
+        .assignment.project:hover {
+            background-image: linear-gradient(90deg, var(--pid-color), var(--pid-color) 15%, var(--hightlight-overlay) 15%);
+        }
+
+        .assignment.developer {
+            padding: 0.5em 0.5em 0.5em 17%;
+        }
+
+        .assignment.developer:hover {
+            background-color: var(--hightlight-overlay);
+        }
+
+        /* https://css-tricks.com/solved-with-css-logical-styling-based-on-the-number-of-given-elements/ */
+        div:first-child:nth-last-child(3) {
+            background-color: red;
+        }
+
+        .soll {
+            z-index: 10;
+            /*border: 1px solid white;*/
+            border-top-width: 2px;
+            border-radius: 0.5rem;
+            position: absolute;
+            bottom: -1px;
+            left: -1px;
+            width: 100%;
+            user-input: none;
+            user-select: none;
+            text-align: center;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* default, to be overridden when live: */
+            background-color: transparent;
+            opacity: 0.5;
+            pointer-events: none;
+            color: transparent;
+        }
+
+        .soll.live {
+            /* make sure to have higher specificity */
+            background-color: var(--hightlight-overlay);
+            opacity: 0.7;
+            pointer-events: auto;
+            color: #4DA695;
+        }
+
+        .week.drop {
+            background-color: var(--hightlight-overlay);
+        }
+
+        h1 {
+            color: #e3e3e4;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body>
 
-<h1>Personaleinsatzplanung</h1>
+    <h1>Personaleinsatzplanung</h1>
 
-<main>
-    <div id="topicsOverWeeks"></div>
-</main>
+    <main>
+        <div id="topicsOverWeeks"></div>
+    </main>
 
 
-<script>
-  window.grailsServerName = "localhost";
-  window.grailsServerPort = "8080";
-  window.restPath         = '/developers';
-  window.appRootId        = 'topicsOverWeeks';                    // keep page specifics in the page
-</script>
+    <script>
+        window.grailsServerName = "localhost";
+        window.grailsServerPort = "8080";
+        window.restPath = '/developers';
+        window.appRootId = 'topicsOverWeeks';                    // keep page specifics in the page
+    </script>
 
 </body>
+
 </html>
